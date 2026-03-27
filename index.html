@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sơ đồ E19 - Digital Full</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="app-container">
+    <header><h2 style="margin:0">SƠ ĐỒ CHỈ DẪN DOANH TRẠI TRUNG ĐOÀN 19</h2></header>
+
+    <div class="toolbar">
+        <button class="btn-list" onclick="toggleList()">☰ DANH SÁCH VỊ TRÍ</button>
+        <button class="btn-list" onclick="showLoginModal()" style="background:#222; color:var(--army-yellow); border:1px solid var(--army-yellow); font-size:18px; padding:8px 12px;">👤</button>
+    </div>
+
+    <div class="map-wrapper">
+        <img src="https://i.postimg.cc/Hxwmkz52/SO-DO-DOANH-TRAI-e19.png" id="main-img">
+        <div id="hotspot-container"></div>
+    </div>
+
+    <div id="listPanel">
+        <h2 style="text-align:center; color:var(--army-red); margin:0 0 15px 0">DANH SÁCH ĐỊA ĐIỂM</h2>
+        <div id="listContent"></div>
+    </div>
+</div>
+
+<div id="infoModal" class="modal">
+    <div class="modal-content">
+        <span class="close-x" onclick="closeModal()">×</span>
+        <h2 id="mTitle"></h2>
+        <p id="mDesc"></p>
+        
+        <div id="mainView">
+            <div class="view-box" id="picBox">📷 Ảnh thực tế</div>
+            <button onclick="switchView('nav')">HƯỚNG DẪN ĐƯỜNG NỘI BỘ</button>
+            <button onclick="openGMap()">GOOGLE MAP</button>
+        </div>
+
+        <div id="navView" style="display:none">
+            <div class="view-box" id="navBox">📷 Ảnh lộ trình</div>
+            <button onclick="switchView('main')">QUAY LẠI</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const data = [
+    // --- KHỐI TRUNG ĐOÀN BỘ ---
+        { id: "S1", name: "NHÀ TRỰC BAN", t: 51.29, l: 53.84 },
+        { id: "S2", name: "HỘI TRƯỜNG", t: 40.18, l: 83.84 },
+        { id: "S3", name: "NHÀ Ở CH/e", t: 28.31, l: 86.34 },
+        { id: "S4", name: "NHÀ LÀM VIỆC", t: 29.82, l: 66.94 },
+        { id: "S5", name: "NHÀ Ở SĨ QUAN", t: 22.46, l: 79.64 },
+        { id: "S6", name: "NHÀ Ở QNCN", t: 22.91, l: 71.24 },
+        { id: "S7", name: "NHÀ ĂN CƠ QUAN", t: 23.06, l: 53.94 },
+        { id: "S8", name: "NHÀ Ở TRUNG ĐỘI VỆ BINH", t: 27.71, l: 50.94 },
+        { id: "S9", name: "WC bVB", t: 27.56, l: 47.54 },
+        { id: "S10", name: "NHÀ THI ĐẤU", t: 44.23, l: 83.84 },
+        { id: "K1", name: "KHÁN ĐÀI", t: 52.49, l: 68.64 },
+        { id: "P15-1", name: "NHÀ ĐỂ XE TĐB", t: 23.06, l: 63.54 },
+        
+        // --- KHỐI CÁC ĐẠI ĐỘI TRỰC THUỘC ---
+        { id: "c17-1", name: "NHÀ Ở c17 (Dưới)", t: 50.54, l: 28.84 },
+        { id: "c17-2", name: "NHÀ Ở c17 (Trên)", t: 44.23, l: 29.04 },
+        { id: "c18", name: "NHÀ Ở c18", t: 38.67, l: 28.74 },
+        { id: "c15", name: "NHÀ Ở c15", t: 50.09, l: 12.84 },
+        { id: "c20", name: "NHÀ Ở c20", t: 43.18, l: 13.04 },
+        { id: "c16-1", name: "NHÀ Ở c16 (Dưới)", t: 59.55, l: 14.64 },
+        { id: "c16-2", name: "NHÀ Ở c16 (Trên)", t: 63.30, l: 14.54 },
+        { id: "c25", name: "NHÀ Ở c25", t: 59.70, l: 36.74 },
+        { id: "cTT-1", name: "NHÀ ĂN CÁC cTT.1", t: 39.88, l: 20.64 },
+        { id: "cTT-2", name: "NHÀ ĂN CÁC cTT.2", t: 63.00, l: 31.64 },
+        { id: "WC-15-20", name: "WC c15 VÀ c20", t: 46.33, l: 9.74 },
+        { id: "WC-c16", name: "WC c16", t: 67.95, l: 14.24 },
+        { id: "WC-c17", name: "WC c17", t: 47.98, l: 31.44 },
+        { id: "WC-c18", name: "WC c18", t: 39.88, l: 31.64 },
+        { id: "c14-1", name: "NHÀ Ở c14 (1)", t: 68.25, l: 36.94 },
+        { id: "c14-2", name: "NHÀ Ở c14 (2)", t: 72.46, l: 37.04 },
+        { id: "Ăn-c14", name: "NHÀ ĂN c14", t: 68.86, l: 29.34 },
+        { id: "c24", name: "NHÀ Ở c24", t: 37.92, l: 92.64 },
+        { id: "P15-2", name: "NHÀ ĐỂ XE ĐƠN VỊ", t: 64.35, l: 37.04 },
+        { id: "Cổng", name: "CỔNG CHÍNH", t: 28.31, l: 57.5 },
+
+        // --- CÁC VỊ TRÍ BÀ VỪA BỔ SUNG ---
+        { id: "CT", name: "CĂN TIN", t: 31.77, l: 29.84 },
+        { id: "CTOC", name: "NHÀ CẮT TÓC KHỐI cTT", t: 31.62, l: 25.84 },
+        { id: "BBOI", name: "BỂ BƠI", t: 45.73, l: 53.84 },
+        { id: "BTLUC", name: "BÃI THỂ LỰC", t: 42.13, l: 53.84 },
+        { id: "TENNIS", name: "SÂN TENNIS", t: 38.22, l: 53.84 },
+];
+
+/* 🔥 ẢNH DÙNG CHUNG (SỬA Ở ĐÂY) */
+const imageData = {
+    "S1": { real: "https://i.ibb.co/wFTQKh2h/nh-TB.jpg", nav: "https://i.ibb.co/0y82z7ZR/Nh-thi-u.png" },
+    "S2": { real: "https://i.ibb.co/N6YLbB1D/z7650407497229-7aefa7b75575dd6a729f5216c9e1c58c.jpg", nav: "https://i.ibb.co/LXcX086X/H-i-tr-ng.png" },
+    "S3": { real: "https://i.ibb.co/C3y80Xcx/nh-CHe.jpg", nav: "https://i.ibb.co/xKNKhpjX/nh-CHe.png" },
+
+    "S4": { real: "https://i.ibb.co/f3MxTM9/nh-l-m-vi-c.jpg", nav: "https://i.ibb.co/jkJPz24R/Nh-l-m-vi-c.png" },
+    "S5": { real: "https://i.ibb.co/k6k31H4v/z7650407897009-a9f67e3b2d959bf58fcfceddfe8293ef.jpg", nav: "https://i.ibb.co/QjQwhQL0/Nh-S-quan.png" },
+    "S6": { real: "https://i.ibb.co/1Y8x3Yvd/nh-QNCN.jpg", nav: "https://i.ibb.co/tTVRJJS3/Nh-QNCN.png" },
+    "S7": { real: "https://i.ibb.co/0VYQKwBF/b-p.jpg", nav: "https://i.ibb.co/N2ZWXhX7/B-p-c-quan.png" },
+    "S8": { real: "https://i.ibb.co/0RgDDy5q/b-VB.jpg", nav: "https://i.ibb.co/Ps9thk1L/Trung-i-VB.png" },
+    "S9": { real: "", nav: "" },
+    "S10": { real: "", nav: "" },
+
+    "K1": { real: "https://i.ibb.co/6RtMLC3j/z7650407401093-cf5ca0b3f02272cad59ba1c04fd5f242.jpg", nav: "https://i.ibb.co/0y82z7ZR/Nh-thi-u.png" },
+   "P15-1": { real: "https://i.ibb.co/xqsrprmQ/z7650407617070-3bc568d5654f44cc852ad93fad83eda5.jpg", nav: "https://i.ibb.co/ZzP5cPbn/Nh-xe.png" },
+
+    "c17-1": { real: "https://i.ibb.co/4gMZN9Zd/c17.jpg", nav: "" },
+    "c17-2": { real: "https://i.ibb.co/4gMZN9Zd/c17.jpg", nav: "" },
+    "c18": { real: "https://i.ibb.co/5XtXzFKn/c18.jpg", nav: "" },
+    "c15": { real: "", nav: "" },
+    "c20": { real: "https://i.ibb.co/xKGV0PmC/c20.jpg", nav: "https://i.ibb.co/fzbNwfzK/c-TS20.png" },
+    "c16-1": { real: "https://i.ibb.co/Ndz2rbLr/c16.jpg", nav: "" },
+    "c16-2": { real: "https://i.ibb.co/Ndz2rbLr/c16.jpg", nav: "" },
+    "c25": { real: "", nav: "" },
+
+    "cTT-1": { real: "", nav: "" },
+    "cTT-2": { real: "", nav: "" },
+
+    "WC-15-20": { real: "", nav: "" },
+    "WC-c16": { real: "", nav: "" },
+    "WC-c17": { real: "", nav: "" },
+    "WC-c18": { real: "https://i.ibb.co/5XtXzFKn/c18.jpg", nav: "" },
+
+    "c14-1": { real: "https://i.ibb.co/fVR6Bjwq/c14.jpg", nav: "" },
+    "c14-2": { real: "", nav: "" },
+    "Ăn-c14": { real: "", nav: "" },
+
+    "c24": { real: "https://i.ibb.co/qMdtmkFs/c24.jpg", nav: "https://i.ibb.co/394C8mJ4/i-i-qu-n-y-24.png" },
+    "P15-2": { real: "https://i.ibb.co/xqsrprmQ/z7650407617070-3bc568d5654f44cc852ad93fad83eda5.jpg", nav: "https://i.ibb.co/ZzP5cPbn/Nh-xe.png" },
+    "Cổng": { real: "", nav: "" },
+
+    "CT": { real: "https://i.ibb.co/C5yNxBfY/c-n-ttin.jpg", nav: "https://i.ibb.co/KjwKwjwY/C-n-tin.png" },
+    "CTOC": { real: "", nav: "" },
+    "BBOI": { real: "", nav: "" },
+    "BTLUC": { real: "", nav: "" },
+    "TENNIS": { real: "", nav: "" }
+};
+let currentItem = null;
+
+const container = document.getElementById('hotspot-container');
+const list = document.getElementById('listContent');
+
+data.forEach(item => {
+    const spot = document.createElement('div');
+    spot.className = 'hotspot';
+    spot.style.top = item.t + '%';
+    spot.style.left = item.l + '%';
+    spot.onclick = () => openModal(item);
+    container.appendChild(spot);
+
+    const li = document.createElement('div');
+    li.innerHTML = `<b>${item.id}</b>: ${item.name}`;
+    li.onclick = () => openModal(item);
+    list.appendChild(li);
+});
+
+/* 🔥 FIX CHÍNH Ở ĐÂY */
+function openModal(item) {
+    currentItem = item;
+
+    document.getElementById('mTitle').innerText = item.id;
+    document.getElementById('mDesc').innerText = item.name;
+    document.getElementById('infoModal').style.display = 'block';
+
+    const img = imageData[item.id];
+
+    document.getElementById('picBox').innerHTML =
+        img?.real ? `<img src="${img.real}" style="max-width:100%">` : "📷 Chưa có ảnh";
+
+    document.getElementById('navBox').innerHTML =
+        img?.nav ? `<img src="${img.nav}" style="max-width:100%">` : "📷 Chưa có ảnh";
+
+    switchView('main');
+}
+
+function switchView(v) {
+    document.getElementById('mainView').style.display = v === 'main' ? 'block' : 'none';
+    document.getElementById('navView').style.display = v === 'nav' ? 'block' : 'none';
+}
+
+function openGMap() {
+    window.open(`https://www.google.com/maps`, '_blank');
+}
+
+function toggleList() {
+    const p = document.getElementById('listPanel');
+    p.style.display = p.style.display === 'block' ? 'none' : 'block';
+}
+
+function closeModal() {
+    document.getElementById('infoModal').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
