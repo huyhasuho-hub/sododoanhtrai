@@ -31,3 +31,12 @@ input { width: 95%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-
   #listPanel { width: 95%; top: 110px; }
   .modal-content { width: 95%; }
 }
+.close-list {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+}
