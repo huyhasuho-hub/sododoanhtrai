@@ -57,7 +57,6 @@ const data = [
         { id: "S6", name: "NHÀ Ở QNCN", t: 22.91, l: 71.24 },
         { id: "S7", name: "NHÀ ĂN CƠ QUAN", t: 23.06, l: 53.94 },
         { id: "S8", name: "NHÀ Ở TRUNG ĐỘI VỆ BINH", t: 27.71, l: 50.94 },
-        { id: "S9", name: "WC bVB", t: 27.56, l: 47.54 },
         { id: "S10", name: "NHÀ THI ĐẤU", t: 44.23, l: 83.84 },
         { id: "K1", name: "KHÁN ĐÀI", t: 52.49, l: 68.64 },
         { id: "P15-1", name: "NHÀ ĐỂ XE TĐB", t: 23.06, l: 63.54 },
@@ -73,10 +72,7 @@ const data = [
         { id: "c25", name: "NHÀ Ở c25", t: 59.70, l: 36.74 },
         { id: "cTT-1", name: "NHÀ ĂN CÁC cTT.1", t: 39.88, l: 20.64 },
         { id: "cTT-2", name: "NHÀ ĂN CÁC cTT.2", t: 63.00, l: 31.64 },
-        { id: "WC-15-20", name: "WC c15 VÀ c20", t: 46.33, l: 9.74 },
-        { id: "WC-c16", name: "WC c16", t: 67.95, l: 14.24 },
-        { id: "WC-c17", name: "WC c17", t: 47.98, l: 31.44 },
-        { id: "WC-c18", name: "WC c18", t: 39.88, l: 31.64 },
+        
         { id: "c14-1", name: "NHÀ Ở c14 (1)", t: 68.25, l: 36.94 },
         { id: "c14-2", name: "NHÀ Ở c14 (2)", t: 72.46, l: 37.04 },
         { id: "Ăn-c14", name: "NHÀ ĂN c14", t: 68.86, l: 29.34 },
@@ -103,31 +99,27 @@ const imageData = {
     "S6": { real: "https://i.ibb.co/1Y8x3Yvd/nh-QNCN.jpg", nav: "https://i.ibb.co/tTVRJJS3/Nh-QNCN.png" },
     "S7": { real: "https://i.ibb.co/0VYQKwBF/b-p.jpg", nav: "https://i.ibb.co/N2ZWXhX7/B-p-c-quan.png" },
     "S8": { real: "https://i.ibb.co/0RgDDy5q/b-VB.jpg", nav: "https://i.ibb.co/Ps9thk1L/Trung-i-VB.png" },
-    "S9": { real: "", nav: "" },
     "S10": { real: "https://i.ibb.co/tPYxTftK/z7650407401093-cf5ca0b3f02272cad59ba1c04fd5f242.jpg", nav: "https://i.ibb.co/934DMfFQ/Nh-thi-u.png" },
 
-    "K1": { real: "https://i.ibb.co/6RtMLC3j/z7650407401093-cf5ca0b3f02272cad59ba1c04fd5f242.jpg", nav: "https://i.ibb.co/0y82z7ZR/Nh-thi-u.png" },
+    "K1": { real: "https://i.ibb.co/p6qknJWb/z7650407708095-ad92f65c0f3a54f5e42d9998a42fc8c9.jpg", nav: "https://i.ibb.co/SDSjh4Ks/khandai.png" },
    "P15-1": { real: "https://i.ibb.co/xqsrprmQ/z7650407617070-3bc568d5654f44cc852ad93fad83eda5.jpg", nav: "https://i.ibb.co/ZzP5cPbn/Nh-xe.png" },
 
-    "c17-1": { real: "https://i.ibb.co/4gMZN9Zd/c17.jpg", nav: "" },
-    "c17-2": { real: "https://i.ibb.co/4gMZN9Zd/c17.jpg", nav: "" },
-    "c18": { real: "https://i.ibb.co/5XtXzFKn/c18.jpg", nav: "" },
-    "c15": { real: "", nav: "" },
+    "c17-1": { real: "https://i.ibb.co/4gMZN9Zd/c17.jpg", nav: "https://i.ibb.co/XffVh2mt/c17.png" },
+    "c17-2": { real: "https://i.ibb.co/4gMZN9Zd/c17.jpg", nav: "https://i.ibb.co/XffVh2mt/c17.png" },
+    "c18": { real: "https://i.ibb.co/5XtXzFKn/c18.jpg", nav: "https://i.ibb.co/39gt7b7w/c18.png" },
+    "c15": { real: "", nav: "https://i.ibb.co/mFbTMS8c/c15.png" },
     "c20": { real: "https://i.ibb.co/xKGV0PmC/c20.jpg", nav: "https://i.ibb.co/fzbNwfzK/c-TS20.png" },
-    "c16-1": { real: "https://i.ibb.co/Ndz2rbLr/c16.jpg", nav: "" },
-    "c16-2": { real: "https://i.ibb.co/Ndz2rbLr/c16.jpg", nav: "" },
-    "c25": { real: "", nav: "" },
+    "c16-1": { real: "https://i.ibb.co/Ndz2rbLr/c16.jpg", nav: "https://i.ibb.co/pBrBGD7N/c16.png" },
+    "c16-2": { real: "https://i.ibb.co/Ndz2rbLr/c16.jpg", nav: "https://i.ibb.co/pBrBGD7N/c16.png" },
+    "c25": { real: "https://i.ibb.co/V0thSKDM/c25.jpg", nav: "https://i.ibb.co/WWTrcWTx/c25.png" },
 
-    "cTT-1": { real: "", nav: "" },
-    "cTT-2": { real: "", nav: "" },
+    "cTT-1"    : { real: "https://i.ibb.co/0yrX1tNc/ctt.jpg", nav: "https://i.ibb.co/kg5mYfj9/cct1.png" },
+    "cTT-2": { real: "https://i.ibb.co/0yrX1tNc/ctt.jpg", nav: "https://i.ibb.co/kg5mYfj9/cct1.png" },
 
-    "WC-15-20": { real: "", nav: "" },
-    "WC-c16": { real: "", nav: "" },
-    "WC-c17": { real: "", nav: "" },
-    "WC-c18": { real: "https://i.ibb.co/5XtXzFKn/c18.jpg", nav: "" },
 
-    "c14-1": { real: "https://i.ibb.co/fVR6Bjwq/c14.jpg", nav: "" },
-    "c14-2": { real: "", nav: "" },
+
+    "c14-1": { real: "https://i.ibb.co/fVR6Bjwq/c14.jpg", nav: "https://i.ibb.co/gMWfx3ZX/c14.png" },
+    "c14-2": { real: "https://i.ibb.co/fVR6Bjwq/c14.jpg", nav: "https://i.ibb.co/gMWfx3ZX/c14.png" },
     "Ăn-c14": { real: "", nav: "" },
 
     "c24": { real: "https://i.ibb.co/qMdtmkFs/c24.jpg", nav: "https://i.ibb.co/394C8mJ4/i-i-qu-n-y-24.png" },
@@ -135,10 +127,10 @@ const imageData = {
     "Cổng": { real: "", nav: "" },
 
     "CT": { real: "https://i.ibb.co/C5yNxBfY/c-n-ttin.jpg", nav: "https://i.ibb.co/KjwKwjwY/C-n-tin.png" },
-    "CTOC": { real: "", nav: "" },
-    "BBOI": { real: "", nav: "" },
-    "BTLUC": { real: "", nav: "" },
-    "TENNIS": { real: "", nav: "" }
+    "CTOC": { real: "https://i.ibb.co/C5yNxBfY/c-n-ttin.jpg", nav: "https://i.ibb.co/KjwKwjwY/C-n-tin.png" },
+    "BBOI": { real: "", nav: "https://i.ibb.co/chTBHCY8/beboi.png" },
+    "BTLUC": { real: "", nav: "https://i.ibb.co/RLd6hPm/baiitheluc.png" },
+    "TENNIS": { real: "", nav: "https://i.ibb.co/ymyhBSXJ/tenis.png" }
 };
 let currentItem = null;
 
